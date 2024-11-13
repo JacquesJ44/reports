@@ -3,6 +3,8 @@ import pdfkit
 import os
 from datetime import datetime
 
+# CSV files downloaded from Bicoms must be opened in Excel first and converted. Then save the file again (as CSV). The files are then ready to be processed.
+
 directory = r"C:\Users\Jacques\Documents\vsc\bicoms_reports\downloads"
 # Columns for the pandas dataframe
 columns = ["From", "To", "Date/Time", "Call Duration", "Rating Duration", "Cost", "Status", "ID", "Caller ID"]
@@ -29,6 +31,7 @@ for file in os.listdir(directory):
          df = pd.read_csv(path, encoding='utf-16', sep='\t', header=None)
          df.columns = columns
          df[['Date', 'Time']] = df['Date/Time'].str.split(' ', expand=True)
+         df = df.drop(columns=['Date/Time'])
          # print(df.head())
          
          # Iterate over the rows of the dataframe, finding calls made between 17:00 and 06:00
@@ -72,7 +75,7 @@ for file in os.listdir(directory):
                   </style>
             </head>
             <body>
-               <h1>{file}</h1>
+               <h1>{file.strip(".csv")}</h1>
                   <table>   
                      <thead>
                      <tr>
@@ -92,7 +95,7 @@ for file in os.listdir(directory):
          <html>
             <head><title>No Data Found</title></head>
             <body>
-                  <h1>{file}</h1>
+                  <h1>{file.strip(".csv")}</h1>
                   <table border="1">
                      <tr>{''.join(['<td>N/A</td>' for _ in range(10)])}</tr>
                   </table>
