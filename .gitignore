@@ -9,6 +9,7 @@ __pycache__/
 # Files
 *.csv
 *.pdf
+*.xlsx
 test.py 
 
 # Distribution / packaging
